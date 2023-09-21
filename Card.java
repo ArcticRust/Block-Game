@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.HashSet;
 import java.util.Set;
@@ -8,17 +7,37 @@ public class Card {
     ArrayList<Coordinate> coordinates = new ArrayList<>();
 
     public Card(Coordinate... inputs) {
-        addCoordinates(inputs);
+        addCoordinates(0, 0, inputs);
     }
 
-    public void addCoordinates(Coordinate... inputs) {
+    public void addCoordinates(int x, int y, Coordinate... inputs) {
         for (Coordinate input : inputs) {
-            coordinates.add(input);
+            coordinates.add(new Coordinate(input.x + x, input.y + y));
         }
     }
 
-    public boolean checkAvailability(Coordinate... inputs) {
-        // add functionality to this
+    public List<Coordinate> getCoordinates() {
+        return coordinates;
+    }
+
+    public boolean checkAvailability(int x, int y, Coordinate... inputs) {
+        ArrayList<Integer> pairs = new ArrayList<Integer>();
+        for (Coordinate coordinate : coordinates) {
+            pairs.add(coordinate.x);
+            pairs.add(coordinate.y);
+        }
+        ArrayList<Coordinate> adjustedCoordinates = new ArrayList<>();
+        for (Coordinate coordinate : inputs) {
+            adjustedCoordinates.add(new Coordinate(x + coordinate.x, y + coordinate.y));
+        }
+        for (Coordinate coordinate : adjustedCoordinates) {
+            List<Integer> samplePair = new ArrayList<Integer>();
+            samplePair.add(coordinate.x);
+            samplePair.add(coordinate.y);
+            if (pairs.contains(samplePair)) {
+                return false;
+            }
+        }
         return true;
     }
 
@@ -38,14 +57,14 @@ public class Card {
         }
         for (int i = maxY; i >= minY; i--) {
             for (int j = maxX; j >= minX; j--) {
-                Coordinate sampleCoordinate = new Coordinate(j, i);
+                Coordinate sampleCoordinate = new Coordinate(j, maxY - i);
                 List<Integer> samplePair = new ArrayList<Integer>();
                 samplePair.add(sampleCoordinate.x);
                 samplePair.add(sampleCoordinate.y);
                 if (coordPairs.contains(samplePair)) {
-                    System.out.print("1");
+                    System.out.print("◼");
                 } else {
-                    System.out.print("0");
+                    System.out.print("◻");
                 }
                 System.out.print(" ");
             }

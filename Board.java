@@ -19,22 +19,26 @@ public class Board {
     }
   }
 
-  public void update(int x, int y, int player) {
-    arr.get(y).get(x).setControl(player);
+  public void update(int x, int y, Coordinate... coordinates) {
+    
   }
 
   public void printDurability() {
     for (int i = 0; i < arr.size(); i++) {
-        for (int j = 0; j < arr.get(0).size(); j++) {
-          System.out.print(arr.get(i).get(j).getValue() + colorConversion.get(arr.get(i).get(j).getValue()));
-          System.out.print("  ");
-        }
-        System.out.println("");
+      for (int j = 0; j < arr.get(0).size(); j++) {
+        System.out.print(arr.get(i).get(j).getValue() + colorConversion.get(arr.get(i).get(j).getValue()));
+        System.out.print("  ");
+      }
+
+      System.out.println("");
+
     }
   }
 
   public int calculateScore(int player) {
+
     int total = 0;
+
     for (int i = 0; i < arr.size(); i++) {
       for (int j = 0; j < arr.get(0).size(); j++) {
         if (arr.get(i).get(j).getPlayer() == player) {
@@ -42,7 +46,8 @@ public class Board {
         }
       }
     }
-     return total;
+
+    return total;
   }
 
   public void printOwnership() {
@@ -51,15 +56,16 @@ public class Board {
         int player = arr.get(i).get(j).getPlayer();
         switch (player) {
           case 0:
-            System.out.print("\uD83D\uDD35 ");
+            System.out.print("\uD83D\uDD35");
             break;
           case 1:
-            System.out.print("\uD83d\uDD34 ");
+            System.out.print("\uD83d\uDD34");
             break;
           case 2:
-            System.out.print("\uD83D\uDD35 ");
+            System.out.print("\uD83D\uDD35");
             break;
         }
+        System.out.print(" ");
       }
       System.out.println("");
     }
