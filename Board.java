@@ -11,7 +11,7 @@ public class Board {
     colorConversion.put(3, "\u001B[33m");
     colorConversion.put(4, "\u001B[34m");
     colorConversion.put(5, "\u001B[35m");
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0; i < 14; i++) {
       arr.add(new ArrayList<>());
       for (int j = 0; j < 14; j++) {
         arr.get(i).add(new BoardSpot((int) Math.floor(Math.random() * 4 + 2)));

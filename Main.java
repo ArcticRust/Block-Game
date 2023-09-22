@@ -1,9 +1,9 @@
 class Main {
   public static void main(String[] args) {
-    StateController stateController = new StateController();
+    StateController stateController = new StateController(false);
     while (true) {
       stateController.run();
-      if (stateController.gameOver) {
+      if (stateController.getGameOver()) {
         break;
       }
     }

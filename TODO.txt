@@ -1,0 +1,8 @@
+add action to State enum for:
+PlacingCards
+ViewingCards
+AddingToCard
+
+code checking function in board
+
+implement AI decision making
