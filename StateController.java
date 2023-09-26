@@ -43,19 +43,65 @@ public class StateController {
             }
         },
 
-        PlacingCards,
+        PlacingCards {
+            @Override
+            public void action() {
+                if ((playerTurn == 1 && player1Cards.size() == 0) || (playerTurn == 2 && player2Cards.size() == 0)) {
+                    resultString = "Draw a Card Before You Play Any\n";
+                    currState = State.ChoosingOption;
+                } else {
+                    println("Choose card to play");
+                    printCards();
+                    Card usedCard = new Card(); // New card to avoid error
+                    boolean goForward = false;
+                    while (!goForward) {
+                        try {
+                            int val = Integer.parseInt(requestInput());
+                            if (playerTurn == 1) {
+                                usedCard = player1Cards.get(val - 1);
+                            } else {
+                                usedCard = player2Cards.get(val - 1);
+                            }
+                            clearTerminal();
+                            println(String.format("Card %d Selected", val));
+                            goForward = true;
+                        } catch (Exception e) {
+                            println("Invalid Input");
+                        }
+                    }
+                    goForward = false;
+                    while (!goForward) {
+                        try {
+                            board.printOwnershipWithCoordinates();
+                            println("Select xy Coordinate in form: x y");
+                            int x = Integer.parseInt(scanner.next());
+                            int y = Integer.parseInt(scanner.next());
+                            board.update(x, y, usedCard);
+                            goForward = true;
+                        } catch(Exception e) {
+                            println("Invalid Input");
+                        }
+                    }
+                    endTurn();
+                    currState = State.ChoosingOption;
+                }
+            }
+        },
 
         DrawingCard {
             @Override
             public void action() {
                 Card card1 = deck.getRandomCard();
                 Card card2 = deck.getRandomCard();
+                Card card3 = deck.getRandomCard();
                 println("Card 1:");
                 card1.printCard();
                 println("Card 2:");
                 card2.printCard();
+                println("Card 3:");
+                card3.printCard();
                 boolean invalidInput = true;
-                println("Press 1 for Card 1, Press 2 for Card 2");
+                println("Press 1 for Card 1, Press 2 for Card 2, Press 3 for Card 3");
                 while (invalidInput) {
                     switch (requestInput()) {
                         case "1":
@@ -64,6 +110,10 @@ public class StateController {
                             break;
                         case "2":
                             if (playerTurn == 1) { player1Cards.add(card2); } else { player2Cards.add(card2); };
+                            invalidInput = false;
+                            break;
+                        case "3":
+                            if (playerTurn == 1) { player1Cards.add(card3); } else { player2Cards.add(card3); };
                             invalidInput = false;
                             break;
                         default:
@@ -78,11 +128,21 @@ public class StateController {
 
         AddingToCard,
 
+        ViewingCards {
+            @Override
+            public void action() {
+                printCards();
+                println("Press any button to go back to options");
+                requestInput();
+                currState = State.ChoosingOption;
+            }
+        },
+
         ChoosingOption {
             @Override
             public void action() {
                 println(String.format("Player %d turn:", playerTurn));
-                println("Choose an action:\n q - View Durability of Board\n a - View Board Ownership\n w - Place a Card\n s - Add to a Card\n e - Draw a Card");
+                println("Choose an action:\n q - View Durability of Board\n a - View Board Ownership\n w - Place a Card\n s - Add to a Card\n e - Draw a Card\n z - View Cards");
                 String input = requestInput();
                 switch (input) {
                     case "q":
@@ -99,6 +159,9 @@ public class StateController {
                         break;
                     case "e":
                         currState = State.DrawingCard;
+                        break;
+                    case "z":
+                        currState = State.ViewingCards;
                         break;
                     default:
                         resultString = "Please Choose a Valid Input\n";
@@ -164,7 +227,7 @@ public class StateController {
         return "not implemented";
     }
 
-    void clearTerminal() {
+    static void clearTerminal() {
         System.out.print("\033[H\033[2J");
     }
 
@@ -184,4 +247,18 @@ public class StateController {
     public StateController(boolean AIControlled) {
         AI = AIControlled;
     } 
+
+    public static void printCards() {
+        if (playerTurn == 1) {
+            for (int i = 0; i < player1Cards.size(); i++) {
+                println(String.format("Card %d: ", i + 1));
+                player1Cards.get(i).printCard();
+            }
+        } else {
+            for (int i = 0; i < player2Cards.size(); i++) {
+                println(String.format("Card %d: ", i + 1));
+                player2Cards.get(i).printCard();
+            }
+        }
+    }
 }

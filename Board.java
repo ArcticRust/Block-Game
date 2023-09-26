@@ -19,19 +19,20 @@ public class Board {
     }
   }
 
-  public void update(int x, int y, Coordinate... coordinates) {
+  public void update(int x, int y, Card card) {
     
   }
 
   public void printDurability() {
     for (int i = 0; i < arr.size(); i++) {
+      if (i > 4) {
+        System.out.print(" ");
+      }
       for (int j = 0; j < arr.get(0).size(); j++) {
         System.out.print(arr.get(i).get(j).getValue() + colorConversion.get(arr.get(i).get(j).getValue()));
         System.out.print("  ");
       }
-
       System.out.println("");
-
     }
   }
 
@@ -69,5 +70,31 @@ public class Board {
       }
       System.out.println("");
     }
+  }
+
+  public void printOwnershipWithCoordinates() {
+    for (int i = 0; i < arr.size(); i++) {
+      System.out.print(String.format("%d:", 14 - i));
+      if (i > 4) {
+        System.out.print(" ");
+      }
+      for (int j = 0; j < arr.get(0).size(); j++) {
+        int player = arr.get(i).get(j).getPlayer();
+        switch (player) {
+          case 0:
+            System.out.print("\uD83D\uDD35");
+            break;
+          case 1:
+            System.out.print("\uD83d\uDD34");
+            break;
+          case 2:
+            System.out.print("\uD83D\uDD35");
+            break;
+        }
+        System.out.print(" ");
+      }
+      System.out.println("");
+    }
+    System.out.println("    1  2  3  4  5  6  7  8  9 10 11 12 13 14");
   }
 }
