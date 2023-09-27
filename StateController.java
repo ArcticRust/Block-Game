@@ -73,10 +73,12 @@ public class StateController {
                     while (!goForward) {
                         try {
                             board.printOwnershipWithCoordinates();
-                            println("Select xy Coordinate in form: x y");
-                            int x = Integer.parseInt(scanner.next());
-                            int y = Integer.parseInt(scanner.next());
-                            board.update(x, y, usedCard);
+                            usedCard.printCard();
+                            println("Input x coordinate");
+                            int x = Integer.parseInt(requestInput());
+                            println("Input y coordinate");
+                            int y = Integer.parseInt(requestInput());
+                            board.update(x, y, usedCard, playerTurn);
                             goForward = true;
                         } catch(Exception e) {
                             println("Invalid Input");
@@ -141,7 +143,7 @@ public class StateController {
         ChoosingOption {
             @Override
             public void action() {
-                println(String.format("Player %d turn:", playerTurn));
+                System.out.println((playerTurn == 1 ? "\u001B[31m" : "\u001B[34m") + String.format("Player %d turn", playerTurn));
                 println("Choose an action:\n q - View Durability of Board\n a - View Board Ownership\n w - Place a Card\n s - Add to a Card\n e - Draw a Card\n z - View Cards");
                 String input = requestInput();
                 switch (input) {

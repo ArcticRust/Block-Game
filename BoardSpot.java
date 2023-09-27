@@ -15,7 +15,7 @@ public class BoardSpot {
         if (value <= 0) {
             controlledBy = -1;
         }
-        else if (controlledBy != 0) {
+        else if (controlledBy == 0) {
             controlledBy = player;
         }
     }

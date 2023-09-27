@@ -19,8 +19,10 @@ public class Board {
     }
   }
 
-  public void update(int x, int y, Card card) {
-    
+  public void update(int x, int y, Card card, int player) {
+    for (Coordinate coordinate : card.getCoordinates()) {
+      arr.get(13 + coordinate.y - y).get(coordinate.x + x - 1).setControl(player);
+    }
   }
 
   public void printDurability() {
@@ -63,7 +65,7 @@ public class Board {
             System.out.print("\uD83d\uDD34");
             break;
           case 2:
-            System.out.print("\uD83D\uDD35");
+            System.out.print("\uD83D\uDD36");
             break;
         }
         System.out.print(" ");
@@ -88,7 +90,7 @@ public class Board {
             System.out.print("\uD83d\uDD34");
             break;
           case 2:
-            System.out.print("\uD83D\uDD35");
+            System.out.print("\uD83D\uDD36");
             break;
         }
         System.out.print(" ");

@@ -20,27 +20,6 @@ public class Card {
         return coordinates;
     }
 
-    public boolean checkAvailability(int x, int y, Coordinate... inputs) {
-        ArrayList<Integer> pairs = new ArrayList<Integer>();
-        for (Coordinate coordinate : coordinates) {
-            pairs.add(coordinate.x);
-            pairs.add(coordinate.y);
-        }
-        ArrayList<Coordinate> adjustedCoordinates = new ArrayList<>();
-        for (Coordinate coordinate : inputs) {
-            adjustedCoordinates.add(new Coordinate(x + coordinate.x, y + coordinate.y));
-        }
-        for (Coordinate coordinate : adjustedCoordinates) {
-            List<Integer> samplePair = new ArrayList<Integer>();
-            samplePair.add(coordinate.x);
-            samplePair.add(coordinate.y);
-            if (pairs.contains(samplePair)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     public void printCard() {
         int minX = 0;
         int maxX = 0;
