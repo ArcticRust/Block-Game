@@ -1,5 +1,10 @@
 import java.util.Scanner;
+import java.util.Set;
+
+import javax.smartcardio.CardPermission;
+
 import java.util.ArrayList;
+import java.util.HashSet;
 
 
 
@@ -128,7 +133,59 @@ public class StateController {
             }
         },
 
-        AddingToCard,
+        AddingToCard {
+            @Override
+            public void action() {
+                boolean moveForward = false;
+                while (!moveForward) {
+                    try {
+                        println("Choose a Card to Add to:");
+                        printCards();
+                        gameOver = true;   
+                        println("Choose the Card to Add to that Card");
+                        int val1 = Integer.parseInt(requestInput());
+                        int val2 = Integer.parseInt(requestInput());
+                        if (val1 == val2) {
+                            throw new Exception();
+                        }
+                        Card card1 = new Card();
+                        Card card2 = new Card();
+                        switch (playerTurn) {
+                        case 1:
+                            card1 = player1Cards.get(val1 - 1);
+                            card2 = player1Cards.get(val2 - 1);
+                            break;
+                        case 2:
+                            card1 = player2Cards.get(val1 - 1);
+                            card2 = player2Cards.get(val2 - 1);
+                            break;
+                        }
+                        Set<Coordinate> possibleCoordinates = new HashSet<>();
+                        for (Coordinate coordinate : card1.getCoordinates()) {
+                            if (card1.checkAvailability(coordinate.x - 1, coordinate.y, card2.getCoordinates())) {
+                                possibleCoordinates.add(new Coordinate(coordinate.x - 1, coordinate.y));
+                            }
+                            if (card1.checkAvailability(coordinate.x + 1, coordinate.y, card2.getCoordinates())) {
+                                possibleCoordinates.add(new Coordinate(coordinate.x + 1, coordinate.y));
+                            }
+                            if (card1.checkAvailability(coordinate.x, coordinate.y - 1, card2.getCoordinates())) {
+                                possibleCoordinates.add(new Coordinate(coordinate.x, coordinate.y - 1));
+                            }
+                            if (card1.checkAvailability(coordinate.x, coordinate.y + 1, card2.getCoordinates())) {
+                                possibleCoordinates.add(new Coordinate(coordinate.x, coordinate.y + 1));
+                            }
+                        }
+                        Card theCardThatDoesTheThing = new Card(card1.getCoordinates());
+                        for (Coordinate possibleCoordinate : possibleCoordinates) {
+                            theCardThatDoesTheThing.addCoordinates(0, 0, new Coordinate(possibleCoordinate.x, possibleCoordinate.y, true));
+                        }
+                    } catch (Exception e) {
+                        clearTerminal();
+                        println("Please Choose a Valid Card");
+                    }
+                }
+            }
+        },
 
         ViewingCards {
             @Override
