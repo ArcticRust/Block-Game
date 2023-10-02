@@ -35,9 +35,11 @@ public class Card {
         int maxX = 0;
         int minY = 0;
         int maxY = 0;
-        Set<AlteredPair> coordPairs = new HashSet<>();
+        Set<List<Integer>> coordPairs = new HashSet<>();
         for (Coordinate coordinate : coordinates) {
-            AlteredPair pair = new AlteredPair(coordinate.x, coordinate.y, coordinate.partOfAdding);
+            List<Integer> pair = new ArrayList<>();
+            pair.add(coordinate.x);
+            pair.add(coordinate.y);
             coordPairs.add(pair);
             maxY = Math.max(maxY, coordinate.y);
             maxX = Math.max(maxX, coordinate.x);
