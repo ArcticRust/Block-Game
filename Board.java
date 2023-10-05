@@ -14,25 +14,22 @@ public class Board {
     for (int i = 0; i < 14; i++) {
       arr.add(new ArrayList<>());
       for (int j = 0; j < 14; j++) {
-        arr.get(i).add(new BoardSpot((int) Math.floor(Math.random() * 4 + 2)));
+        arr.get(i).add(new BoardSpot((int) Math.floor(Math.random() * 3 + 2)));
       }
     }
   }
 
   public void update(int x, int y, Card card, int player) {
     for (Coordinate coordinate : card.getCoordinates()) {
-      arr.get(13 + coordinate.y - y).get(coordinate.x + x - 1).setControl(player);
+      arr.get(13 + coordinate.y - y).get(-coordinate.x + x).setControl(player);
     }
   }
 
   public void printDurability() {
     for (int i = 0; i < arr.size(); i++) {
-      if (i > 4) {
-        System.out.print(" ");
-      }
       for (int j = 0; j < arr.get(0).size(); j++) {
-        System.out.print(arr.get(i).get(j).getValue() + colorConversion.get(arr.get(i).get(j).getValue()));
         System.out.print("  ");
+        System.out.print(arr.get(i).get(j).getValue() + colorConversion.get(arr.get(i).get(j).getValue()));
       }
       System.out.println("");
     }
@@ -51,6 +48,15 @@ public class Board {
     }
 
     return total;
+  }
+
+  public boolean gameFinished() {
+    for (int i = 0; i < arr.size(); i++) {
+      for (int j = 0; j < arr.get(0).size(); j++) {
+        if (arr.get(i).get(j).getPlayer() == 0) return false;
+      }
+    }
+    return true;
   }
 
   public void printOwnership() {

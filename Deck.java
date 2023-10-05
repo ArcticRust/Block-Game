@@ -41,7 +41,7 @@ public class Deck {
   };
 
   public Card getRandomCard() {
-    return cards[(int) Math.floor(Math.random() * cards.length)];
+    return new Card(cards[(int) Math.floor(Math.random() * cards.length)].getCoordinates());
   }
 
 }

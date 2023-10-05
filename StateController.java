@@ -1,11 +1,7 @@
 import java.util.Scanner;
-import java.util.Set;
-
-import javax.smartcardio.CardPermission;
-
 import java.util.ArrayList;
-import java.util.HashSet;
-
+import java.util.Collections;
+import java.lang.Thread;
 
 
 public class StateController {
@@ -138,42 +134,48 @@ public class StateController {
             public void action() {
                 boolean moveForward = false;
                 Card usedCard = new Card();
-                while (!moveForward) {
-                    try {
-                        println("Choose a Card to Add to:");
-                        printCards();
-                        int val = Integer.parseInt(requestInput());
-                        switch (playerTurn) {
-                            case 1:
-                                usedCard = player1Cards.get(val);
-                                moveForward = true;
-                                break;
-                            case 2:
-                                usedCard = player2Cards.get(val);
-                                moveForward = true;
-                                break;
+                if ((playerTurn == 1 && player1Cards.size() == 0) || (playerTurn == 2 && player2Cards.size() == 0)) {
+                    resultString = "Draw a Card Before You Add to Any\n";
+                    currState = State.ChoosingOption;
+                } else {
+                    while (!moveForward) {
+                        try {
+                            println("Choose a Card to Add to:");
+                            printCards();
+                            int val = Integer.parseInt(requestInput());
+                            switch (playerTurn) {
+                                case 1:
+                                    usedCard = player1Cards.get(val - 1);
+                                    moveForward = true;
+                                    break;
+                                case 2:
+                                    usedCard = player2Cards.get(val - 1);
+                                    moveForward = true;
+                                    break;
+                            }
+                        } catch (Exception e) {
+                            clearTerminal();
+                            println("Please Choose a Valid Card");
                         }
-                    } catch (Exception e) {
-                        clearTerminal();
-                        println("Please Choose a Valid Card");
                     }
-                }
-                ArrayList<Coordinate> possibleCoordinates = new ArrayList<>();
-                for (Coordinate coordinate : usedCard.getCoordinates()) {
-                    ArrayList<Coordinate> errorAvoider = new ArrayList<>();
-                    errorAvoider.add(new Coordinate(0, 0));
-                    if (usedCard.checkAvailability(coordinate.x - 1, coordinate.y, errorAvoider)) {
-                        possibleCoordinates.add(new Coordinate(coordinate.x - 1, coordinate.y));
+                    for (int i = 0; i <= 1; i++) {
+                        ArrayList<Coordinate> possibleCoordinates = new ArrayList<>();
+                    for (Coordinate coordinate : usedCard.getCoordinates()) {
+                        if (usedCard.checkAvailability(coordinate.x - 1, coordinate.y)) {
+                            possibleCoordinates.add(new Coordinate(coordinate.x - 1, coordinate.y));
+                        }
+                        if (usedCard.checkAvailability(coordinate.x + 1, coordinate.y)) {
+                            possibleCoordinates.add(new Coordinate(coordinate.x + 1, coordinate.y));
+                        }
+                        if (usedCard.checkAvailability(coordinate.x, coordinate.y + 1)) {
+                            possibleCoordinates.add(new Coordinate(coordinate.x, coordinate.y + 1));
+                        }
                     }
-                    if (usedCard.checkAvailability(coordinate.x + 1, coordinate.y, errorAvoider)) {
-                        possibleCoordinates.add(new Coordinate(coordinate.x + 1, coordinate.y));
+                    Collections.shuffle(possibleCoordinates);
+                    usedCard.addCoordinates(0, 0, possibleCoordinates.get(0));
                     }
-                    if (usedCard.checkAvailability(coordinate.x, coordinate.y - 1, errorAvoider)) {
-                        possibleCoordinates.add(new Coordinate(coordinate.x, coordinate.y - 1));
-                    }
-                    if (usedCard.checkAvailability(coordinate.x, coordinate.y + 1, errorAvoider)) {
-                        possibleCoordinates.add(new Coordinate(coordinate.x, coordinate.y + 1));
-                    }
+                    currState = State.ChoosingOption;
+                    endTurn();
                 }
             }
         },
@@ -243,6 +245,16 @@ public class StateController {
         print(resultString);
         resultString = "";
         currState.action();
+        if (board.gameFinished()) {
+            gameOver = true;
+            int player1Score = board.calculateScore(1);
+            int player2Score = board.calculateScore(2);
+            if (player1Score > player2Score) {
+                System.out.println(String.format("Player 1 Wins with %d Points!", player1Score));
+            } else {
+                System.out.println(String.format("Player 2 Wins with %d Points!", player2Score));
+            }
+        }
     }
 
 
@@ -265,15 +277,46 @@ public class StateController {
     } 
 
     static String requestInput() {
-        if (AI && playerTurn == 1) {
-            return AIDecision();
+        if (AI && playerTurn == 2) {
+            try {
+                String AIString = AIDecision();
+                return AIString;
+            } catch (Exception e) {
+                System.out.println("error bad ai bad ai error bad bad why bad");
+                return "help";
+            }
         }
         else {
             return scanner.nextLine().trim().toLowerCase();
         }
     }
 
-    static String AIDecision() {
+    private static boolean cardDrawn = false;
+    static String AIDecision() throws Exception {
+        Thread.sleep(1200);
+        switch (currState) {
+
+        case AddingToCard:
+            return "1";
+        case ChoosingOption:
+            if (!cardDrawn) return "e";
+            else if (player1Cards.get(0).coordinates.size() < 10) return "s";
+            else return "w";
+        case DrawingCard:
+            cardDrawn = true;
+            return "1";
+        case PlacingCards:
+            break;
+        case ViewingCards:
+            break;
+        case ViewingDurability:
+            break;
+        case ViewingOwnership:
+            break;
+        default:
+            break;
+
+        }
         return "not implemented";
     }
 
