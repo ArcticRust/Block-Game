@@ -10,14 +10,19 @@ public class BoardSpot {
         controlledBy = 0;
     }
 
-    public void setControl(int player) {
-        value--;
-        if (value <= 0) {
+    public boolean setControl(int player) {
+        if (player == 0) {
+            value++;
+        }
+        if (value <= 1) {
             controlledBy = -1;
         }
         else if (controlledBy == 0) {
+            value--;
             controlledBy = player;
+            return true;
         }
+        return false;
     }
 
     public int getValue() {

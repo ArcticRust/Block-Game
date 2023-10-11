@@ -30,6 +30,15 @@ public class Card {
         return coordinates;
     }
 
+    public boolean checkAvailability(int x, int y) {
+        for (int i = 0; i < coordinates.size(); i++) {
+            if (coordinates.get(i).x == x && coordinates.get(i).y == y) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public void printCard() {
         int minX = 0;
         int maxX = 0;
@@ -49,7 +58,7 @@ public class Card {
             minX = Math.min(minX, coordinate.x);
         }
     
-        for (int i = maxY; i >= minY; i--) {
+        for (int i = minY; i <= maxY; i++) {
             for (int j = maxX; j >= minX; j--) {
                 Coordinate sampleCoordinate = new Coordinate(j, maxY - i);
                 List<Integer> samplePair = new ArrayList<Integer>();
@@ -66,21 +75,6 @@ public class Card {
             }
             System.out.println();
         }
-    }
-    
-    
-
-    public boolean checkAvailability(int x, int y) {
-        int minX = 0;
-        int maxX = 0;
-        int minY = 0;
-        int maxY = 0;
-        for (int i = 0; i < coordinates.size(); i++) {
-            if (coordinates.get(i).x == x && coordinates.get(i).y == y) {
-                return false;
-            }
-        }
-        return true;
     }
 }
 

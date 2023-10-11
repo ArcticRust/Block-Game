@@ -1,4 +1,2 @@
-AI decision making
-Tests
-
-AI Strategy:
+Finish AI
+Finish Tests

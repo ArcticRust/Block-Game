@@ -20,8 +20,17 @@ public class Board {
   }
 
   public void update(int x, int y, Card card, int player) {
-    for (Coordinate coordinate : card.getCoordinates()) {
-      arr.get(13 + coordinate.y - y).get(-coordinate.x + x).setControl(player);
+    ArrayList<Coordinate> coordinateChanges = new ArrayList<>();
+    try {
+      for (Coordinate coordinate : card.getCoordinates()) {
+        if (arr.get(14 - coordinate.y - y).get(-coordinate.x + x).setControl(player)) {
+          coordinateChanges.add(coordinate);
+        }
+      }
+    } catch (Exception e) {
+      for (Coordinate coordinate : coordinateChanges) {
+        arr.get(14 + coordinate.y - y).get(-coordinate.x + x).setControl(0);
+      }
     }
   }
 
