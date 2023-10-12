@@ -38,6 +38,13 @@ public class Deck {
       new Coordinate(0, 0),
       new Coordinate(0, 1),
       new Coordinate(1, 0)
+    ),
+    new Card(
+      new Coordinate(0, 0),
+      new Coordinate(1, 0),
+      new Coordinate(2, 0),
+      new Coordinate(3, 1),
+      new Coordinate(3, 0)
     )
   };
 
