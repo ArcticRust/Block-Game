@@ -292,20 +292,40 @@ public class StateController {
     }
 
     private static boolean cardDrawn = false;
+    private static boolean cardSelected = false;
+    private static boolean xSelected = false;
     static String AIDecision() throws Exception {
-        Thread.sleep(1200);
+        Thread.sleep(300);
         switch (currState) {
 
         case AddingToCard:
             return "1";
         case ChoosingOption:
             if (!cardDrawn) return "e";
-            else if (player1Cards.get(0).coordinates.size() < 10) return "s";
+            else if (player2Cards.get(0).coordinates.size() < 10) return "s";
             else return "w";
         case DrawingCard:
             cardDrawn = true;
             return "1";
         case PlacingCards:
+            if (!cardSelected) {
+                cardSelected = true;
+                return "1";
+            }
+            for (int i = 1; i <= 14; i++) {
+                for (int j = 1; j <= 14; j++) {
+                    if (board.arr.get(14 - i).get(j - 1).getPlayer() == 0) {
+                        if (!xSelected) {
+                            xSelected = true;
+                            return String.format("%d", i);
+                        } else {
+                            xSelected = false;
+                            cardSelected = false;
+                            return String.format("%d", j);
+                        }
+                    }
+                }
+            }
             break;
         case ViewingCards:
             break;

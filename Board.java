@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Board {
-  ArrayList<ArrayList<BoardSpot>> arr = new ArrayList<>();
+  public ArrayList<ArrayList<BoardSpot>> arr = new ArrayList<>();
   HashMap<Integer, String> colorConversion = new HashMap<>();
 
   Board() {
