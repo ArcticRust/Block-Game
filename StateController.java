@@ -2,7 +2,7 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.lang.Thread;
-
+import java.util.Random;
 
 public class StateController {
     private enum State {
@@ -295,14 +295,14 @@ public class StateController {
     private static boolean cardSelected = false;
     private static boolean xSelected = false;
     static String AIDecision() throws Exception {
-        Thread.sleep(300);
+        Thread.sleep(1000);
         switch (currState) {
 
         case AddingToCard:
             return "1";
         case ChoosingOption:
             if (!cardDrawn) return "e";
-            else if (player2Cards.get(0).coordinates.size() < 10) return "s";
+            else if (player2Cards.get(0).coordinates.size() < 11) return "s";
             else return "w";
         case DrawingCard:
             cardDrawn = true;
@@ -311,22 +311,15 @@ public class StateController {
             if (!cardSelected) {
                 cardSelected = true;
                 return "1";
+            } else if (!xSelected) {
+                xSelected = true;
+                return Integer.toString((int) Math.floor(Math.random() * (14 - 1 + 1)) + 1);
+            } else {
+                xSelected = false;
+                cardSelected = false;
+                return Integer.toString((int) Math.floor(Math.random() * (14 - 1 + 1)) + 1);
             }
-            for (int i = 1; i <= 14; i++) {
-                for (int j = 1; j <= 14; j++) {
-                    if (board.arr.get(14 - i).get(j - 1).getPlayer() == 0) {
-                        if (!xSelected) {
-                            xSelected = true;
-                            return String.format("%d", i);
-                        } else {
-                            xSelected = false;
-                            cardSelected = false;
-                            return String.format("%d", j);
-                        }
-                    }
-                }
-            }
-            break;
+            
         case ViewingCards:
             break;
         case ViewingDurability:
