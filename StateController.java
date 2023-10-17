@@ -295,7 +295,7 @@ public class StateController {
     private static boolean cardSelected = false;
     private static boolean xSelected = false;
     static String AIDecision() throws Exception {
-        Thread.sleep(1000);
+        Thread.sleep(800);
         switch (currState) {
 
         case AddingToCard:
