@@ -73,6 +73,9 @@ public class Board {
       for (int j = 0; j < arr.get(0).size(); j++) {
         int player = arr.get(i).get(j).getPlayer();
         switch (player) {
+          case -1:
+            System.out.print("\uD83C\uDFB2");
+            break;
           case 0:
             System.out.print("\uD83D\uDD35");
             break;
@@ -98,6 +101,9 @@ public class Board {
       for (int j = 0; j < arr.get(0).size(); j++) {
         int player = arr.get(i).get(j).getPlayer();
         switch (player) {
+          case -1:
+            System.out.print("\uD83C\uDFB2");
+            break;
           case 0:
             System.out.print("\uD83D\uDD35");
             break;
